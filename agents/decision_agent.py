@@ -2,10 +2,10 @@ class DecisionAgent:
     def decide(self, match_score, missing_skills):
         if match_score >= 70:
             decision = "INTERVIEW"
-            reason = "Strong alignment with job requirements."
+            reason = "Candidate meets resume screening criteria and is suitable for technical interview."
         else:
             decision = "REJECTED"
-            reason = "Insufficient match with job requirements."
+            reason = "Resume does not meet the minimum screening threshold."
 
         return {
             "decision": decision,
