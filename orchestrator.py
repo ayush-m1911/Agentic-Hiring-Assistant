@@ -2,12 +2,14 @@ from tools.pdf_loader import extract_text_from_pdf
 from agents.resume_screening_agent import ResumeScreeningAgent
 from agents.job_matching_agent import JobMatchingAgent
 from agents.decision_agent import DecisionAgent
+from agents.interview_question_agent import InterviewQuestionAgent
 
 class HiringOrchestrator:
     def process_inputs(self, resumes, job_description):
         screening_agent = ResumeScreeningAgent()
         matching_agent = JobMatchingAgent()
         decision_agent = DecisionAgent()
+        question_agent = InterviewQuestionAgent()
 
         results = []
 
@@ -24,12 +26,21 @@ class HiringOrchestrator:
                 match_result["missing_skills"]
             )
 
+            interview_questions = []
+            if decision_result["decision"] == "INTERVIEW":
+                interview_questions = question_agent.generate_questions(
+                    resume_text,
+                    job_description,
+                    match_result["missing_skills"]
+                )
+
             results.append({
                 "filename": resume.name,
                 "match_score": match_result["match_score"],
                 "decision": decision_result["decision"],
                 "reason": decision_result["reason"],
-                "missing_skills": decision_result["risk_factors"]
+                "missing_skills": match_result["missing_skills"],
+                "interview_questions": interview_questions
             })
 
         return results
