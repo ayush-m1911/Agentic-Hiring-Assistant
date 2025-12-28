@@ -61,3 +61,35 @@ class EmailAgent:
 
          self.send_email(receiver_email, subject, body)
 
+    def send_offer_email(self, receiver_email, role, joining_date, ctc):
+        subject = f"Offer Letter – {role}"
+
+        body = (
+        f"Dear Candidate,\n\n"
+        f"We are pleased to inform you that you have been selected for the role of {role}.\n\n"
+        f"Offer Details:\n"
+        f"- Role: {role}\n"
+        f"- Joining Date: {joining_date}\n"
+        f"- Compensation: {ctc}\n\n"
+        f"The formal offer letter will be shared shortly.\n\n"
+        f"Best regards,\n"
+        f"Hiring Team"
+    )
+
+        self.send_email(receiver_email, subject, body)
+
+
+    def send_post_interview_rejection_email(self, receiver_email):
+        subject = "Interview Outcome"
+
+        body = (
+        "Dear Candidate,\n\n"
+        "Thank you for taking the time to interview with us.\n"
+        "After careful consideration, we regret to inform you that "
+        "we will not be proceeding further with your application.\n\n"
+        "We appreciate your effort and wish you success in your future endeavors.\n\n"
+        "Kind regards,\n"
+        "Hiring Team"
+    )
+
+        self.send_email(receiver_email, subject, body)

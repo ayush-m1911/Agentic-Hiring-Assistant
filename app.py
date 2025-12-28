@@ -15,8 +15,8 @@ st.set_page_config(
 # ---------------------------------
 st.title("🧠 Agentic Hiring Assistant")
 st.caption(
-    "AI-powered system for resume screening, interview scheduling, "
-    "and automated candidate communication"
+    "End-to-end AI-assisted hiring system with interview scheduling, "
+    "Google Meet integration, and automated candidate communication"
 )
 
 # ---------------------------------
@@ -46,23 +46,15 @@ st.subheader("🗓️ Interview Scheduling (For Shortlisted Candidates)")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    interview_date = st.date_input(
-        "Interview Date"
-    )
+    interview_date = st.date_input("Interview Date")
 
 with col2:
-    start_time = st.time_input(
-        "Start Time",
-        value=time(10, 0)
-    )
+    start_time = st.time_input("Start Time", value=time(10, 0))
 
 with col3:
-    end_time = st.time_input(
-        "End Time",
-        value=time(11, 0)
-    )
+    end_time = st.time_input("End Time", value=time(11, 0))
 
-# Convert to ISO datetime strings (required by Google Calendar API)
+# Convert to ISO datetime strings
 interview_start = None
 interview_end = None
 
@@ -145,11 +137,71 @@ if st.button("🚀 Run Hiring Pipeline"):
                 else:
                     st.info("Candidate not shortlisted for interview.")
 
+# =====================================================
+# POST-INTERVIEW FINAL DECISION SECTION
+# =====================================================
+st.markdown("---")
+st.header("📌 Post-Interview Final Decision")
+
+st.info(
+    "Use this section after interviews are completed to send "
+    "offer or post-interview rejection emails."
+)
+
+with st.form("post_interview_form"):
+    candidate_email = st.text_input(
+        "Candidate Email",
+        placeholder="candidate@example.com"
+    )
+
+    final_status = st.radio(
+        "Final Interview Outcome",
+        ["SELECTED", "REJECTED"]
+    )
+
+    role = st.text_input(
+        "Role",
+        value="Backend Developer"
+    )
+
+    joining_date = st.text_input(
+        "Joining Date",
+        value="To be discussed"
+    )
+
+    ctc = st.text_input(
+        "CTC / Compensation",
+        value="As per company standards"
+    )
+
+    submit_final_decision = st.form_submit_button(
+        "📨 Send Final Decision Email"
+    )
+
+if submit_final_decision:
+    if not candidate_email:
+        st.warning("Please enter candidate email.")
+    else:
+        orchestrator = HiringOrchestrator()
+
+        with st.spinner("Sending final decision email..."):
+            response = orchestrator.post_interview_action(
+                candidate_email=candidate_email,
+                final_status=final_status,
+                role=role,
+                joining_date=joining_date,
+                ctc=ctc
+            )
+
+        st.success(
+            f"✅ {response['status']} for {response['candidate_email']}"
+        )
+
 # ---------------------------------
 # Footer
 # ---------------------------------
 st.markdown("---")
 st.caption(
-    "⚠️ This system assists recruiters in screening, scheduling, "
-    "and communication. Final hiring decisions should involve human review."
+    "⚠️ This system assists recruiters across the hiring lifecycle. "
+    "Final hiring decisions must always involve human judgment."
 )
