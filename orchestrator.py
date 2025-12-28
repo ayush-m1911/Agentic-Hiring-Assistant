@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 
 from tools.pdf_loader import extract_text_from_pdf
+from tools.email_extractor import extract_email
+
 
 from agents.resume_screening_agent import ResumeScreeningAgent
 from agents.job_matching_agent import JobMatchingAgent
@@ -88,13 +90,17 @@ class HiringOrchestrator:
                     match_result["missing_skills"]
                 )
 
-            # ⚠️ Placeholder (later auto-extracted from resume)
-            candidate_email = "candidate@example.com"
+            candidate_email = extract_email(resume_text)
+
+            # Fallback if email not found
+            if not candidate_email:
+             candidate_email = "hr@company.com"  # safe fallback
+
 
             meeting_details = None
 
             # 6️⃣ Email + Interview scheduling
-            if send_emails:
+            if send_emails and candidate_email:
                 if decision_result["decision"] == "REJECTED":
                     self.email_agent.send_rejection_email(candidate_email)
 
@@ -120,6 +126,7 @@ class HiringOrchestrator:
             # 7️⃣ Collect results
             results.append({
                 "filename": resume.name,
+                "candidate_email": candidate_email,
                 "match_score": match_result["match_score"],
                 "decision": decision_result["decision"],
                 "reason": decision_result["reason"],

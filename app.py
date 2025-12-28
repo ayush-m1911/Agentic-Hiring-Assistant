@@ -107,6 +107,7 @@ if st.button("🚀 Run Hiring Pipeline"):
 
         for res in results:
             with st.expander(f"📄 {res['filename']}"):
+                st.write(f"**Candidate Email:** {res.get('candidate_email', 'Not found')}")
                 st.write(f"**Match Score:** {res['match_score']}%")
                 st.write(f"**Decision:** {res['decision']}")
                 st.write(f"**Reason:** {res['reason']}")
