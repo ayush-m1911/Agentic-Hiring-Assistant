@@ -1,87 +1,49 @@
-Job Title: Django Development Engineer
-📍 Location:
+# 🧠 Agentic Hiring Assistant (Agentic ATS)
 
-Remote / On-site / Hybrid
+An end-to-end **AI-assisted Applicant Tracking System (ATS)** that automates resume screening, interview scheduling with Google Meet, candidate communication, and lifecycle tracking — while keeping **final hiring decisions under human control**.
 
-🕒 Experience:
+---
 
-0–2 Years (Freshers with strong projects are welcome)
+## 🚀 Project Overview
 
-🧩 Job Summary
+Recruitment is often time-consuming due to:
+- Manual resume screening
+- Repetitive candidate communication
+- Interview scheduling overhead
+- Lack of centralized candidate tracking
 
-We are looking for a Django Development Engineer to design, develop, and maintain scalable web applications using Python and Django. The ideal candidate should have strong backend fundamentals, database knowledge, and the ability to collaborate with frontend and DevOps teams.
+This project solves these problems by introducing an **agentic AI-based hiring assistant** that supports recruiters across the entire hiring lifecycle.
 
-🔧 Key Responsibilities
+📌 **AI assists — humans decide.**
 
-Develop and maintain backend services using Django / Django REST Framework
+---
 
-Design and implement RESTful APIs
+## ✨ Key Features
 
-Integrate databases such as PostgreSQL / MySQL / SQLite
+- 📄 Resume parsing from PDF
+- 📧 Automatic email extraction from resumes
+- 🧠 AI-based resume–job matching with score
+- ⚖️ Rule-based shortlisting (Interview / Reject)
+- 🎤 Personalized interview question generation
+- 🗓️ Per-candidate interview scheduling
+- 🔗 Automatic Google Meet link creation
+- ✉️ Automated emails (shortlist, rejection, offer)
+- 🗂️ Candidate database with status tracking
+- 📌 Post-interview decision update from UI
+- 👨‍💼 Human-in-the-loop ethical hiring
 
-Implement authentication, authorization, and security best practices
+---
 
-Optimize application performance and scalability
+## 🧩 System Architecture
 
-Collaborate with frontend developers (HTML, CSS, JavaScript, React/Vue)
-
-Write clean, reusable, and well-documented code
-
-Debug, test, and deploy applications
-
-Work with Git for version control and collaboration
-
-🎯 Required Skills
-
-Strong proficiency in Python
-
-Hands-on experience with Django
-
-Knowledge of Django ORM
-
-Understanding of HTTP, REST APIs
-
-Database skills: SQL (PostgreSQL/MySQL)
-
-Familiarity with Git & GitHub
-
-Basic understanding of HTML, CSS, JavaScript
-
-Good problem-solving and debugging skills
-
-⭐ Preferred Skills (Good to Have)
-
-Experience with Django REST Framework (DRF)
-
-Knowledge of JWT / OAuth authentication
-
-Familiarity with Docker
-
-Experience deploying apps on AWS / Render / Railway / Heroku
-
-Understanding of Celery, Redis
-
-Exposure to CI/CD pipelines
-
-🎓 Education
-
-Bachelor’s degree in Computer Science / IT / Engineering
-(or equivalent practical experience)
-
-💡 What We Offer
-
-Opportunity to work on real-world scalable applications
-
-Mentorship from experienced developers
-
-Flexible work environment
-
-Learning & growth-focused culture
-
-Competitive stipend/salary (based on experience)
-
-📬 How to Apply
-
-Share your resume, GitHub profile, and project links (if any) at:
-📧 [email@example.com
-]
+```text
+Streamlit UI
+     ↓
+Hiring Orchestrator
+     ↓
+------------------------------------------------
+| Resume Agent | Matching Agent | Decision Agent |
+| Interview Agent | Email Agent | DB Layer      |
+------------------------------------------------
+     ↓
+Google Calendar API | SMTP | SQLite
