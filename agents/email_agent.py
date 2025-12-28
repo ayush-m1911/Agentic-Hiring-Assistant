@@ -44,3 +44,20 @@ class EmailAgent:
             "Hiring Team"
         )
         self.send_email(receiver_email, subject, body)
+
+    def send_interview_email_with_meet(self, receiver_email, meet_link, start, end):
+         subject = "Interview Scheduled – Google Meet"
+
+         body = (
+        "Dear Candidate,\n\n"
+        "Your interview has been scheduled.\n\n"
+        f"📅 Start: {start}\n"
+        f"⏰ End: {end}\n"
+        f"🔗 Google Meet Link: {meet_link}\n\n"
+        "Please be available on time.\n\n"
+        "Best regards,\n"
+        "Hiring Team"
+    )
+
+         self.send_email(receiver_email, subject, body)
+

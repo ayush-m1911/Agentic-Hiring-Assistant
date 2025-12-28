@@ -6,3 +6,5 @@ venv/
 .idea/
 .vscode/
 .DS_Store
+token.pkl
+client_secret_397715828389-vpc9m9h13sa8jgq9fmk92od5sniaet3a.apps.googleusercontent.com.json
