@@ -14,10 +14,10 @@ class EmailAgent:
         msg["Subject"] = subject
 
         msg.attach(MIMEText(body, "plain"))
-
+        # server la connect kr ani mail send kr #
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
-            server.login(self.sender_email, self.sender_password)
+            server.login(self.sender_email, self.sender_password) #app password use kr for security purposes#
             server.send_message(msg)
 
     def send_rejection_email(self, receiver_email):

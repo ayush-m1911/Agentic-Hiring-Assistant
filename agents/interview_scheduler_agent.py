@@ -20,13 +20,13 @@ class InterviewSchedulerAgent:
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "client_secret_397715828389-vpc9m9h13sa8jgq9fmk92od5sniaet3a.apps.googleusercontent.com.json", SCOPES
-                )
+                ) # browser open krta , google permission deta , token save hota#
                 self.creds = flow.run_local_server(port=0)
 
             with open("token.pkl", "wb") as token:
                 pickle.dump(self.creds, token)
 
-        self.service = build("calendar", "v3", credentials=self.creds)
+        self.service = build("calendar", "v3", credentials=self.creds) # client object talks with calendar
 
     def schedule_interview(self, candidate_email, start_time, end_time):
         event = {
@@ -46,16 +46,18 @@ class InterviewSchedulerAgent:
                     "requestId": f"meet-{datetime.datetime.now().timestamp()}"
                 }
             },
-        }
+        } # event is created #
 
         created_event = self.service.events().insert(
             calendarId="primary",
             body=event,
             conferenceDataVersion=1
         ).execute()
+        # creates meet link and associated it with event #
 
         return {
             "meet_link": created_event.get("hangoutLink"),
             "start": start_time,
             "end": end_time
         }
+        # return meet link and time details #
