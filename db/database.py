@@ -1,10 +1,14 @@
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
 from datetime import datetime
 
-DB_NAME = "hiring.db"
+load_dotenv()
+
 
 def get_connection():
-    return sqlite3.connect(DB_NAME)
+    return psycopg2.connect(os.getenv("DATABASE_URL"))
+
 
 def create_tables():
     conn = get_connection()
@@ -12,24 +16,23 @@ def create_tables():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS candidates (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         name TEXT,
         email TEXT UNIQUE,
         resume_filename TEXT,
-        match_score REAL,
+        match_score FLOAT,
         missing_skills TEXT,
         status TEXT,
-        interview_start TEXT,
-        interview_end TEXT,
+        interview_start TIMESTAMP,
+        interview_end TIMESTAMP,
         meet_link TEXT,
-        created_at TEXT,
-        updated_at TEXT
+        created_at TIMESTAMP,
+        updated_at TIMESTAMP
     )
     """)
 
     conn.commit()
     conn.close()
-
 
 def upsert_candidate(
     name,
@@ -42,19 +45,19 @@ def upsert_candidate(
     conn = get_connection()
     cursor = conn.cursor()
 
-    now = datetime.utcnow().isoformat()
-
+    now = datetime.utcnow()
+    match_score = float(match_score)
     cursor.execute("""
     INSERT INTO candidates (
         name, email, resume_filename, match_score,
         missing_skills, status, created_at, updated_at
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(email) DO UPDATE SET
-        match_score = excluded.match_score,
-        missing_skills = excluded.missing_skills,
-        status = excluded.status,
-        updated_at = excluded.updated_at
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (email) DO UPDATE SET
+        match_score = EXCLUDED.match_score,
+        missing_skills = EXCLUDED.missing_skills,
+        status = EXCLUDED.status,
+        updated_at = EXCLUDED.updated_at
     """, (
         name,
         email,
@@ -82,18 +85,18 @@ def update_interview_details(
     cursor.execute("""
     UPDATE candidates
     SET
-        interview_start = ?,
-        interview_end = ?,
-        meet_link = ?,
-        status = ?,
-        updated_at = ?
-    WHERE email = ?
+        interview_start = %s,
+        interview_end = %s,
+        meet_link = %s,
+        status = %s,
+        updated_at = %s
+    WHERE email = %s
     """, (
         interview_start,
         interview_end,
         meet_link,
         "INTERVIEW_SCHEDULED",
-        datetime.utcnow().isoformat(),
+        datetime.utcnow(),
         email
     ))
 
@@ -108,12 +111,12 @@ def update_final_status(email, status):
     cursor.execute("""
     UPDATE candidates
     SET
-        status = ?,
-        updated_at = ?
-    WHERE email = ?
+        status = %s,
+        updated_at = %s
+    WHERE email = %s
     """, (
         status,
-        datetime.utcnow().isoformat(),
+        datetime.utcnow(),
         email
     ))
 

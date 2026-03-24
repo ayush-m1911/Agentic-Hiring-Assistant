@@ -53,11 +53,11 @@ JD:
 
         project_score = 100 if "project" in resume_lower else 50
 
-        final_score = (
-            0.5 * skill_score +
-            0.3 * similarity_score +
-            0.2 * project_score
-        )
+        final_score = float(
+    0.5 * float(skill_score) +
+    0.3 * float(similarity_score) +
+    0.2 * float(project_score)
+)
 
         return {
             "match_score": round(final_score, 2),

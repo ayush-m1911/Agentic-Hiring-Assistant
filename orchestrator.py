@@ -53,7 +53,7 @@ class HiringOrchestrator:
             )
 
             decision_result = self.decision_agent.decide(
-                match_result["match_score"],
+                float(match_result["match_score"]),
                 match_result["missing_skills"]
             )
 
